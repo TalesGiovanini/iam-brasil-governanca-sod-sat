@@ -1,4 +1,4 @@
-# IAM Brasil | Governança SoD & SAT
+# IAM | Governança SoD & SAT
 
 > Matriz funcional, conflitos de Segregação de Funções (SoD) e classificação de Sensitive Access Transactions (SAT), com conciliação rastreável entre bases.
 
