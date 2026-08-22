@@ -1,6 +1,6 @@
 # Como contribuir
 
-Obrigado por contribuir com a evolução do IAM Brasil | Governança SoD & SAT.
+Obrigado por contribuir com a evolução do IAM | Governança SoD & SAT.
 
 ## Princípios do projeto
 
