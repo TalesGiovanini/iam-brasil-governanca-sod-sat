@@ -1,0 +1,8 @@
+workflows:
+  scan_project:
+    description: "Workflow determinístico inicial para inspecionar conteúdo de projeto."
+    requires_ai: false
+    steps:
+      - list_files
+      - collect_metadata
+      - summarize_inventory

@@ -1,34 +1,28 @@
-# IAM | Governança SoD & SAT
+# IAM | Governança SoD & SAT + Tales Agent Platform
 
-> Matriz funcional, conflitos de Segregação de Funções (SoD) e classificação de Sensitive Access Transactions (SAT), com conciliação rastreável entre bases.
+> Repositório unificado: análise de Segregação de Funções (SoD) e Sensitive Access Transactions (SAT), combinado com a plataforma agentic `tales-agent` — local-first, CLI-first e independente de fornecedor de IA.
 
-Este projeto é uma aplicação Python local voltada à análise de bases de funcionalidades/transações e usuários/perfis. Ele organiza o resultado no template Excel definido pelo time responsável, registra a conciliação por sistema e produz diagnósticos acionáveis quando as fontes não estiverem aderentes.
+---
 
-## O que a aplicação faz
+## IAM | Governança SoD & SAT
 
-- identifica sistemas, perfis e funcionalidades em planilhas heterogêneas;
-- concilia as bases nos dois sentidos, por sistema e perfil;
-- bloqueia a geração do resultado quando não há sistema conciliado ou há divergências críticas;
-- produz Matriz Funcional, Atividades Conflitantes e SAT no modelo Excel configurado;
-- gera diagnóstico, pendências, análise SoD e minuta de e-mail somente quando aplicável;
-- preserva as fontes: a execução sempre acontece em uma nova pasta de saída.
+Aplicação Python local voltada à análise de bases de funcionalidades/transações e usuários/perfis. Organiza o resultado no template Excel definido pelo time responsável, registra a conciliação por sistema e produz diagnósticos acionáveis.
 
-## Regras de resultado
+### O que a aplicação faz
 
-| Situação encontrada | Resultado Excel | Diagnóstico / análise | Minuta de e-mail |
-| --- | --- | --- | --- |
-| Não há sistema conciliado entre as bases | Bloqueado | Não liberados | Não liberada |
-| Sistema conciliado, mas há divergência de perfis | Bloqueado | Liberados | Liberada |
-| Bases conciliadas | Liberado | Liberados | Desabilitada |
+- Identifica sistemas, perfis e funcionalidades em planilhas heterogêneas;
+- Concilia as bases nos dois sentidos, por sistema e perfil;
+- Bloqueia a geração do resultado quando não há sistema conciliado ou há divergências críticas;
+- Produz Matriz Funcional, Atividades Conflitantes e SAT no modelo Excel configurado;
+- Gera diagnóstico, pendências, análise SoD e minuta de e-mail somente quando aplicável;
+- Preserva as fontes: a execução sempre acontece em uma nova pasta de saída.
 
-## Uso local
+### Uso local
 
 ```powershell
 py -m pip install -r requirements.txt
 py main.py interface
 ```
-
-Na interface, selecione a base de funcionalidades e a base de usuários. A terceira fonte é opcional e deve conter regras SoD explícitas, quando existirem.
 
 Também é possível executar por linha de comando:
 
@@ -36,23 +30,60 @@ Também é possível executar por linha de comando:
 py main.py processar --funcionalidades .\funcionalidades.xlsx --usuarios .\usuarios.xlsx
 ```
 
-## Configuração e template
+---
 
-Os templates oficiais, bases de clientes, diagnósticos, resultados e executáveis não são versionados neste repositório público. Antes de executar, mantenha seu template em `02_CONFIGURACAO/templates/` e informe o mapeamento de colunas necessário em `02_CONFIGURACAO/mapeamentos/`.
+## Tales Agent Platform
 
-O arquivo `mapeamento_colunas.example.json` é um ponto de partida intencionalmente vazio: os campos devem ser configurados com base nas colunas reais das fontes autorizadas, sem inferir conteúdo de negócio.
+Plataforma agentic local-first, CLI-first e independente de fornecedor de IA.
 
-## Contribuições
+### Objetivo
 
-Contribuições são bem-vindas para melhorar validações, normalização, testes, acessibilidade e documentação. Leia [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir uma issue ou pull request.
+Construir um sistema que combine:
+- Core determinístico
+- Agent Engine
+- Knowledge Base local
+- Memory local
+- Tools controladas por política
+- IA opcional e intercambiável
+- CLI como primeira interface
 
-Por segurança, nunca envie dados pessoais, bases de acesso, templates preenchidos, evidências de cliente, resultados de análise ou arquivos executáveis.
+A aplicação deve continuar funcionando com IA desabilitada.
+
+### Começo rápido
+
+Windows PowerShell:
+```powershell
+./scripts/bootstrap.ps1
+```
+
+Linux/macOS:
+```bash
+chmod +x scripts/bootstrap.sh
+./scripts/bootstrap.sh
+```
+
+Depois:
+```bash
+tales status
+```
+
+### Regra arquitetural principal
+```text
+Core != LLM
+Agent != LLM
+OpenAI != Dependência Obrigatória
+```
+
+---
 
 ## Segurança e limites
 
-O mecanismo é local e determinístico: ele não substitui a validação técnica e a aprovação dos responsáveis pelo sistema. Regras, classificações e exceções devem estar documentadas ou ser tratadas como pendência. Consulte [SECURITY.md](SECURITY.md) para reportar uma vulnerabilidade.
+O mecanismo é local e determinístico: não substitui a validação técnica e a aprovação dos responsáveis. Consulte [SECURITY.md](SECURITY.md) para reportar uma vulnerabilidade.
+
+Nunca envie dados pessoais, bases de acesso, templates preenchidos, evidências de cliente ou resultados de análise.
 
 ## Licença
 
-Este projeto é disponibilizado sob a licença MIT. Consulte [LICENSE](LICENSE).
+Disponibilizado sob a licença MIT. Consulte [LICENSE](LICENSE).
 
+Leia `AGENTS.md` antes de usar Codex neste repositório.

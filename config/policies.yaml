@@ -1,0 +1,27 @@
+filesystem:
+  allowed_read_roots:
+    - knowledge
+    - workspace
+    - docs
+  allowed_write_roots:
+    - workspace
+    - data
+    - logs
+  deny_by_default: true
+  require_confirmation_for_delete: true
+  allow_shell_execution: false
+  allow_network: false
+
+roles:
+  reader:
+    - filesystem.read
+    - knowledge.search
+  editor:
+    - filesystem.read
+    - filesystem.write
+    - knowledge.search
+  admin:
+    - filesystem.read
+    - filesystem.write
+    - knowledge.search
+    - system.configure

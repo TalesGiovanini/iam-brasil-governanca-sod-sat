@@ -1,0 +1,18 @@
+app:
+  name: tales-agent
+  environment: local
+  log_level: INFO
+
+ai:
+  enabled: false
+  provider: disabled
+
+storage:
+  database: data/tales.db
+  knowledge_root: knowledge
+  workspace_root: workspace
+  logs_root: logs
+
+security:
+  policy_file: config/policies.yaml
+  default_role: reader

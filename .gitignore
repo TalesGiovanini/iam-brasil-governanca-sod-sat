@@ -1,26 +1,47 @@
+# Python
 __pycache__/
 *.pyc
+*.egg-info/
+.pytest_cache/
+
+# Ambientes virtuais
 .venv/
 venv/
-.env
-# Dados de clientes, fontes, cópias RAW, diagnósticos e evidências de execução.
-01_ENTRADA/
-04_SAIDA/
-03_TRABALHO/
-*.log
-~$*.xlsx
 
-# Pacotes binários e artefatos de compilação; o repositório contém o código-fonte.
+# Variáveis de ambiente e segredos
+.env
+
+# Artefatos de build e distribuição
 build/
 dist/
 *.spec
 *.exe
 08_DISTRIBUICAO/
 
-# Modelos oficiais, referências preenchidas e ativos internos não são publicados.
+# Dados de clientes, fontes, cópias RAW, diagnósticos e evidências de execução
+01_ENTRADA/
+04_SAIDA/
+03_TRABALHO/
+
+# Modelos oficiais, referências preenchidas e ativos internos
 02_CONFIGURACAO/templates/*.xlsx
 02_CONFIGURACAO/recursos/
 
-# Repositório público independente, com dados sintéticos para portfólio.
+# Repositório público independente com dados sintéticos
 09_DEMO_PUBLICA_GITHUB/
 
+# Logs
+*.log
+~$*.xlsx
+
+# tales-agent: dados e logs locais
+data/*.db
+data/*.sqlite*
+logs/*
+!logs/.gitkeep
+workspace/*
+!workspace/.gitkeep
+
+# Sistema
+.DS_Store
+.vscode/settings.json
