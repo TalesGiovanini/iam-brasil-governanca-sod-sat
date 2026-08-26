@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 import os
@@ -23,7 +23,7 @@ DEFAULT_CONFIG = RESOURCE_ROOT / "02_CONFIGURACAO" / "mapeamentos" / "mapeamento
 DEFAULT_OUTPUT = ROOT / "04_SAIDA"
 DEFAULT_DISCOVERY = ROOT / "06_DOCUMENTACAO" / "descoberta_planilhas.md"
 EXCEL_TYPES = (("Planilhas Excel", "*.xlsx *.xlsm *.xls"), ("Todos os arquivos", "*.*"))
-APP_TITLE = "IAM Brasil | Governança SoD & SAT"
+APP_TITLE = "IAM Brasil | GovernanÃ§a SoD & SAT"
 BRAND_BLUE = "#2448A6"
 BRAND_TEAL = "#00AFC1"
 INK = "#17233A"
@@ -35,7 +35,7 @@ LOGO_PATH = RESOURCE_ROOT / "02_CONFIGURACAO" / "recursos" / "iam_brasil_access_
 
 
 class SodSatApplication(ttk.Frame):
-    """Interface local. As fontes são apenas lidas e cada execução guarda cópias RAW."""
+    """Interface local. As fontes sÃ£o apenas lidas e cada execuÃ§Ã£o guarda cÃ³pias RAW."""
 
     def __init__(self, master: tk.Tk) -> None:
         super().__init__(master, padding=20)
@@ -44,7 +44,7 @@ class SodSatApplication(ttk.Frame):
         self.usuarios = tk.StringVar()
         self.conflitos = tk.StringVar()
         self.config = tk.StringVar(value=str(DEFAULT_CONFIG))
-        self.status = tk.StringVar(value="Selecione a base de funcionalidades e a base de usuários; elas podem conter um ou mais sistemas.")
+        self.status = tk.StringVar(value="Selecione a base de funcionalidades e a base de usuÃ¡rios; elas podem conter um ou mais sistemas.")
         self.last_result_file: Path | None = None
         self.last_result_dir: Path | None = None
         self.last_diagnostics_file: Path | None = None
@@ -89,33 +89,33 @@ class SodSatApplication(ttk.Frame):
         if LOGO_PATH.is_file():
             self._header_icon = tk.PhotoImage(file=str(LOGO_PATH)).subsample(15, 15)
             tk.Label(hero, image=self._header_icon, background=BRAND_BLUE).grid(row=0, column=0, rowspan=2, padx=(0, 16), sticky="w")
-        tk.Label(hero, text="IAM Brasil", background=BRAND_BLUE, foreground="white", font=("Aptos Display", 22, "bold")).grid(row=0, column=1, sticky="sw")
-        tk.Label(hero, text="Governança SoD & SAT", background=BRAND_BLUE, foreground="#DFF8FF", font=("Aptos", 12, "bold")).grid(row=1, column=1, sticky="nw", pady=(2, 0))
-        tk.Label(hero, text="Matriz funcional, análise de conflitos e classificação SAT com rastreabilidade.", background=BRAND_BLUE, foreground="#DCE8FF", font=("Aptos", 10), wraplength=330, justify="right").grid(row=0, column=2, rowspan=2, sticky="e")
+        tk.Label(hero, text="Governança de Acessos", background=BRAND_BLUE, foreground="white", font=("Aptos Display", 22, "bold")).grid(row=0, column=1, sticky="sw")
+        tk.Label(hero, text="GovernanÃ§a SoD & SAT", background=BRAND_BLUE, foreground="#DFF8FF", font=("Aptos", 12, "bold")).grid(row=1, column=1, sticky="nw", pady=(2, 0))
+        tk.Label(hero, text="Matriz funcional, anÃ¡lise de conflitos e classificaÃ§Ã£o SAT com rastreabilidade.", background=BRAND_BLUE, foreground="#DCE8FF", font=("Aptos", 10), wraplength=330, justify="right").grid(row=0, column=2, rowspan=2, sticky="e")
 
         sources = ttk.LabelFrame(self, text="  1. Fontes de entrada  ", padding=16, style="Card.TLabelframe")
         sources.grid(row=1, column=0, sticky="ew")
         sources.columnconfigure(1, weight=1)
         self._file_row(sources, 0, "Base de funcionalidades *", self.funcionalidades, self._choose_functionalities)
-        self._file_row(sources, 1, "Base de usuários *", self.usuarios, self._choose_users)
+        self._file_row(sources, 1, "Base de usuÃ¡rios *", self.usuarios, self._choose_users)
         self._file_row(sources, 2, "Regras SoD (opcional)", self.conflitos, self._choose_conflicts)
-        ttk.Label(sources, text="* As planilhas podem conter diversos sistemas. O sistema realiza o de-para por nome, configuração interna ou perfil em comum e registra as pendências para tratativa.", style="Hint.TLabel", wraplength=910).grid(row=3, column=0, columnspan=3, sticky="w", pady=(10, 0))
+        ttk.Label(sources, text="* As planilhas podem conter diversos sistemas. O sistema realiza o de-para por nome, configuraÃ§Ã£o interna ou perfil em comum e registra as pendÃªncias para tratativa.", style="Hint.TLabel", wraplength=910).grid(row=3, column=0, columnspan=3, sticky="w", pady=(10, 0))
 
         actions = ttk.LabelFrame(self, text="  2. Processar e consultar resultados  ", padding=12, style="Card.TLabelframe")
         actions.grid(row=2, column=0, sticky="ew", pady=(16, 12))
         self.discovery_button = ttk.Button(actions, text="Conferir fontes", command=self._discover, style="Secondary.TButton")
         self.discovery_button.grid(row=0, column=0, padx=(0, 8))
-        self.process_button = ttk.Button(actions, text="Gerar análise no modelo oficial", command=self._process, style="Primary.TButton")
+        self.process_button = ttk.Button(actions, text="Gerar anÃ¡lise no modelo oficial", command=self._process, style="Primary.TButton")
         self.process_button.grid(row=0, column=1, padx=(0, 8))
         self.open_button = ttk.Button(actions, text="Abrir Excel gerado", command=self._open_result, state="disabled", style="Action.TButton")
         self.open_button.grid(row=0, column=2, padx=(0, 8))
-        self.download_button = ttk.Button(actions, text="Salvar cópia...", command=self._download_result, state="disabled", style="Action.TButton")
+        self.download_button = ttk.Button(actions, text="Salvar cÃ³pia...", command=self._download_result, state="disabled", style="Action.TButton")
         self.download_button.grid(row=0, column=3)
-        self.diagnostics_button = ttk.Button(actions, text="Diagnóstico", command=self._open_diagnostics, state="disabled", style="Action.TButton")
+        self.diagnostics_button = ttk.Button(actions, text="DiagnÃ³stico", command=self._open_diagnostics, state="disabled", style="Action.TButton")
         self.diagnostics_button.grid(row=0, column=4, padx=(8, 0))
         self.email_button = ttk.Button(actions, text="Minuta de e-mail", command=self._open_email_draft, state="disabled", style="Action.TButton")
         self.email_button.grid(row=0, column=5, padx=(8, 0))
-        self.sod_analysis_button = ttk.Button(actions, text="Análise SoD", command=self._open_sod_analysis, state="disabled", style="Action.TButton")
+        self.sod_analysis_button = ttk.Button(actions, text="AnÃ¡lise SoD", command=self._open_sod_analysis, state="disabled", style="Action.TButton")
         self.sod_analysis_button.grid(row=0, column=6, padx=(8, 0))
         ttk.Label(self, textvariable=self.status, style="Status.TLabel", wraplength=980).grid(row=3, column=0, sticky="w", pady=(0, 8))
 
@@ -125,16 +125,16 @@ class SodSatApplication(ttk.Frame):
         ttk.Button(parent, text="Selecionar", command=command, style="Secondary.TButton").grid(row=row, column=2, padx=(10, 0), pady=6)
 
     def _choose_functionalities(self) -> None:
-        self._select_file(self.funcionalidades, "Selecionar base de funcionalidades/transações")
+        self._select_file(self.funcionalidades, "Selecionar base de funcionalidades/transaÃ§Ãµes")
 
     def _choose_users(self) -> None:
-        self._select_file(self.usuarios, "Selecionar base de usuários e perfis")
+        self._select_file(self.usuarios, "Selecionar base de usuÃ¡rios e perfis")
 
     def _choose_conflicts(self) -> None:
-        self._select_file(self.conflitos, "Selecionar regras SoD explícitas (opcional)")
+        self._select_file(self.conflitos, "Selecionar regras SoD explÃ­citas (opcional)")
 
     def _choose_config(self) -> None:
-        selected = filedialog.askopenfilename(title="Selecionar configuração JSON", initialdir=str(DEFAULT_CONFIG.parent), filetypes=(("Arquivo JSON", "*.json"),))
+        selected = filedialog.askopenfilename(title="Selecionar configuraÃ§Ã£o JSON", initialdir=str(DEFAULT_CONFIG.parent), filetypes=(("Arquivo JSON", "*.json"),))
         if selected:
             self.config.set(selected)
 
@@ -144,20 +144,20 @@ class SodSatApplication(ttk.Frame):
             variable.set(selected)
 
     def _validated_paths(self) -> tuple[Path, Path, Path | None, Path] | None:
-        required = (("Base de funcionalidades", self.funcionalidades.get()), ("Base de usuários", self.usuarios.get()), ("Configuração", self.config.get()))
+        required = (("Base de funcionalidades", self.funcionalidades.get()), ("Base de usuÃ¡rios", self.usuarios.get()), ("ConfiguraÃ§Ã£o", self.config.get()))
         invalid = [name for name, value in required if not value or not Path(value).is_file()]
         if invalid:
-            messagebox.showwarning("Dados necessários", "Selecione arquivos válidos para: " + ", ".join(invalid) + ".")
+            messagebox.showwarning("Dados necessÃ¡rios", "Selecione arquivos vÃ¡lidos para: " + ", ".join(invalid) + ".")
             return None
         functionalities = Path(self.funcionalidades.get()).resolve()
         users = Path(self.usuarios.get()).resolve()
         rules = Path(self.conflitos.get()).resolve() if self.conflitos.get() else None
         config = Path(self.config.get()).resolve()
         if functionalities == users:
-            messagebox.showwarning("Fontes iguais", "Selecione arquivos distintos para funcionalidades e usuários.")
+            messagebox.showwarning("Fontes iguais", "Selecione arquivos distintos para funcionalidades e usuÃ¡rios.")
             return None
         if rules and rules in {functionalities, users}:
-            messagebox.showwarning("Fonte repetida", "A planilha de regras SoD deve ser distinta das duas bases obrigatórias.")
+            messagebox.showwarning("Fonte repetida", "A planilha de regras SoD deve ser distinta das duas bases obrigatÃ³rias.")
             return None
         return functionalities, users, rules, config
 
@@ -171,7 +171,7 @@ class SodSatApplication(ttk.Frame):
             from .discovery import discover_workbooks, write_discovery_report
             report = discover_workbooks(functionalities, users, rules, config)
             write_discovery_report(report, DEFAULT_DISCOVERY)
-            return f"Conferência concluída. Relatório: {DEFAULT_DISCOVERY}", None
+            return f"ConferÃªncia concluÃ­da. RelatÃ³rio: {DEFAULT_DISCOVERY}", None
 
         self._run("Conferindo estrutura e mapeamento das fontes...", work)
 
@@ -182,7 +182,7 @@ class SodSatApplication(ttk.Frame):
         functionalities, users, rules, config = paths
         confirm = messagebox.askokcancel(
             "Gerar resultado",
-            "O sistema confrontará os perfis por sistema nos dois sentidos. Havendo inconsistência, o template ainda será gerado e a execução incluirá diagnóstico, de-para e minuta de e-mail para tratativa. Nenhuma fonte ou template será sobrescrito. Continuar?",
+            "O sistema confrontarÃ¡ os perfis por sistema nos dois sentidos. Havendo inconsistÃªncia, o template ainda serÃ¡ gerado e a execuÃ§Ã£o incluirÃ¡ diagnÃ³stico, de-para e minuta de e-mail para tratativa. Nenhuma fonte ou template serÃ¡ sobrescrito. Continuar?",
         )
         if not confirm:
             return
@@ -190,18 +190,18 @@ class SodSatApplication(ttk.Frame):
         def work():
             from .processor import process_workbooks
             result = process_workbooks(functionalities, users, rules, config, DEFAULT_OUTPUT)
-            email_message = f"Minuta de e-mail: {result.email_draft_path}\n" if result.email_required else "Minuta de e-mail: não habilitada, pois não foram comprovadas divergências de perfis em uma conciliação válida.\n"
+            email_message = f"Minuta de e-mail: {result.email_draft_path}\n" if result.email_required else "Minuta de e-mail: nÃ£o habilitada, pois nÃ£o foram comprovadas divergÃªncias de perfis em uma conciliaÃ§Ã£o vÃ¡lida.\n"
             message = (f"Status: {result.status}\n"
-                       f"Resultado: {result.workbook_path or 'não gerado — conciliação bloqueada'}\n"
-                       f"Teste de consistência: {result.validation_path}\n"
-                       f"Diagnóstico: {result.diagnostics_path}\n"
+                       f"Resultado: {result.workbook_path or 'nÃ£o gerado â€” conciliaÃ§Ã£o bloqueada'}\n"
+                       f"Teste de consistÃªncia: {result.validation_path}\n"
+                       f"DiagnÃ³stico: {result.diagnostics_path}\n"
                        f"{email_message}"
-                       f"Análise SoD detalhada: {result.sod_analysis_path or 'não gerada'}\n"
+                       f"AnÃ¡lise SoD detalhada: {result.sod_analysis_path or 'nÃ£o gerada'}\n"
                        f"Log: {result.log_path}\n"
-                       f"Pendências: {result.pending_path}")
+                       f"PendÃªncias: {result.pending_path}")
             return message, result
 
-        self._run("Validando as bases e gerando uma nova execução...", work)
+        self._run("Validando as bases e gerando uma nova execuÃ§Ã£o...", work)
 
     def _run(self, started_message: str, work) -> None:
         if self._busy:
@@ -235,19 +235,19 @@ class SodSatApplication(ttk.Frame):
             states = self._result_action_states(payload)
             self._set_result_actions(states)
             if payload.status == "BLOQUEADO_SEM_CONCILIACAO":
-                self.status.set("Erro de conciliação: não há sistema comum mapeado entre as bases. Nenhuma ação foi liberada.")
+                self.status.set("Erro de conciliaÃ§Ã£o: nÃ£o hÃ¡ sistema comum mapeado entre as bases. Nenhuma aÃ§Ã£o foi liberada.")
             elif payload.status == "BLOQUEADO_POR_DIVERGENCIA_DE_PERFIS":
-                self.status.set("Matriz Funcional não liberada: regularize as divergências de perfil e consulte o diagnóstico, a minuta e a análise SoD.")
+                self.status.set("Matriz Funcional nÃ£o liberada: regularize as divergÃªncias de perfil e consulte o diagnÃ³stico, a minuta e a anÃ¡lise SoD.")
             else:
-                self.status.set("Concluído. Resultado liberado após a conciliação das bases.")
+                self.status.set("ConcluÃ­do. Resultado liberado apÃ³s a conciliaÃ§Ã£o das bases.")
         else:
             self._set_result_actions({"open": "disabled", "download": "disabled", "diagnostics": "disabled", "email": "disabled", "sod": "disabled"})
-            self.status.set("Concluído.")
+            self.status.set("ConcluÃ­do.")
         self._append(message)
         if getattr(payload, "status", None) == "BLOQUEADO_SEM_CONCILIACAO":
-            messagebox.showerror("Bases não conciliadas", message)
+            messagebox.showerror("Bases nÃ£o conciliadas", message)
         elif getattr(payload, "status", None) == "BLOQUEADO_POR_DIVERGENCIA_DE_PERFIS":
-            messagebox.showwarning("Matriz Funcional não liberada", message)
+            messagebox.showwarning("Matriz Funcional nÃ£o liberada", message)
         else:
             messagebox.showinfo(APP_TITLE, message)
 
@@ -255,49 +255,49 @@ class SodSatApplication(ttk.Frame):
         self._busy = False
         self.discovery_button.configure(state="normal")
         self.process_button.configure(state="normal")
-        self.status.set("A operação não foi concluída; consulte a mensagem abaixo.")
+        self.status.set("A operaÃ§Ã£o nÃ£o foi concluÃ­da; consulte a mensagem abaixo.")
         self._append("ERRO: " + message)
-        messagebox.showerror("Processamento não concluído", message)
+        messagebox.showerror("Processamento nÃ£o concluÃ­do", message)
 
     def _open_result(self) -> None:
         if self.last_result_file and self.last_result_file.is_file():
-            os.startfile(self.last_result_file)  # noqa: S606 - botão local acionado pelo usuário.
+            os.startfile(self.last_result_file)  # noqa: S606 - botÃ£o local acionado pelo usuÃ¡rio.
 
     def _download_result(self) -> None:
         if not self.last_result_file or not self.last_result_file.is_file():
             return
         destination = filedialog.asksaveasfilename(
-            title="Salvar cópia do resultado gerado", initialfile=self.last_result_file.name,
+            title="Salvar cÃ³pia do resultado gerado", initialfile=self.last_result_file.name,
             defaultextension=".xlsx", filetypes=(("Planilha Excel", "*.xlsx"),),
         )
         if not destination:
             return
         target = Path(destination).resolve()
         if target == self.last_result_file.resolve():
-            messagebox.showwarning("Destino inválido", "Escolha uma pasta diferente da execução original.")
+            messagebox.showwarning("Destino invÃ¡lido", "Escolha uma pasta diferente da execuÃ§Ã£o original.")
             return
         shutil.copy2(self.last_result_file, target)
         if self.last_result_dir:
             record = self.last_result_dir / "registro_entrega.json"
             record.write_text(json.dumps({"copiado_em_utc": datetime.now(timezone.utc).isoformat(), "arquivo_origem": str(self.last_result_file), "copia_entregue": str(target)}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        self._append(f"Cópia do resultado salva em: {target}")
-        messagebox.showinfo("Resultado salvo", f"Cópia salva em:\n{target}")
+        self._append(f"CÃ³pia do resultado salva em: {target}")
+        messagebox.showinfo("Resultado salvo", f"CÃ³pia salva em:\n{target}")
 
     def _open_diagnostics(self) -> None:
         if self.last_diagnostics_file and self.last_diagnostics_file.is_file():
-            os.startfile(self.last_diagnostics_file)  # noqa: S606 - botão local acionado pelo usuário.
+            os.startfile(self.last_diagnostics_file)  # noqa: S606 - botÃ£o local acionado pelo usuÃ¡rio.
 
     def _open_email_draft(self) -> None:
         if self.last_email_draft_file and self.last_email_draft_file.is_file():
-            os.startfile(self.last_email_draft_file)  # noqa: S606 - botão local acionado pelo usuário.
+            os.startfile(self.last_email_draft_file)  # noqa: S606 - botÃ£o local acionado pelo usuÃ¡rio.
 
     def _open_sod_analysis(self) -> None:
         if self.last_sod_analysis_file and self.last_sod_analysis_file.is_file():
-            os.startfile(self.last_sod_analysis_file)  # noqa: S606 - botão local acionado pelo usuário.
+            os.startfile(self.last_sod_analysis_file)  # noqa: S606 - botÃ£o local acionado pelo usuÃ¡rio.
 
     def _append(self, message: str) -> None:
-        # O histórico visual foi removido para manter a interface objetiva.
-        # Os logs completos continuam sendo salvos dentro de cada execução.
+        # O histÃ³rico visual foi removido para manter a interface objetiva.
+        # Os logs completos continuam sendo salvos dentro de cada execuÃ§Ã£o.
         return None
 
     @staticmethod
@@ -326,4 +326,5 @@ def start() -> None:
     root = tk.Tk()
     SodSatApplication(root)
     root.mainloop()
+
 
