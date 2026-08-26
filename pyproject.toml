@@ -13,7 +13,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
-openai = ["openai>=1.0"]
+external = ["httpx>=0.27"]
 
 [project.scripts]
 tales = "tales.cli.main:main"

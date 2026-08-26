@@ -3,25 +3,25 @@
 ## Missão
 Construir e evoluir o `tales-agent` como uma plataforma agentic local-first, CLI-first e provider-agnostic.
 
-O sistema deve continuar operacional mesmo quando nenhuma IA/LLM estiver habilitada. Modelos de IA são provedores opcionais, nunca dependências arquiteturais do Core.
+O sistema deve continuar operacional mesmo quando nenhum módulo de inferência estiver habilitado. Provedores externos são opcionais, nunca dependências arquiteturais do Core.
 
 ## Princípios obrigatórios
 - Local-first: dados, memória, índices, logs, configurações e conhecimento ficam locais por padrão.
-- AI optional: `AI_ENABLED=false` deve manter as funções determinísticas operacionais.
-- Provider-agnostic: nenhuma regra de negócio pode depender diretamente de OpenAI ou outro fornecedor.
+- Inferência opcional: `INFERENCE_ENABLED=false` deve manter as funções determinísticas operacionais.
+- Provider-agnostic: nenhuma regra de negócio pode depender diretamente de um fornecedor externo específico.
 - CLI-first: toda capacidade importante deve ser acessível por comando antes de ganhar interface web/desktop.
 - Least privilege: ferramentas recebem apenas permissões mínimas necessárias.
 - Explicit boundaries: nunca acessar diretórios fora dos caminhos autorizados em `config/policies.yaml`.
 - Safe by default: operações destrutivas devem exigir confirmação explícita ou política específica.
 - Auditability: ações relevantes devem gerar logs locais com timestamp, origem, ferramenta, alvo e resultado.
-- Deterministic core: validações, políticas, workflows e operações básicas devem ser testáveis sem LLM.
-- Separation of concerns: Core, Agent Engine, Tools, Knowledge, Memory, AI Providers e CLI devem permanecer desacoplados.
+- Deterministic core: validações, políticas, workflows e operações básicas devem ser testáveis sem provedor externo.
+- Separation of concerns: Core, Agent Engine, Tools, Knowledge, Memory, Módulo de Inferência e CLI devem permanecer desacoplados.
 
 ## Arquitetura alvo
 Camadas principais:
 1. `core/` — engine, comandos, eventos, políticas, contratos.
 2. `agent/` — orquestração, planner, executor e workflows.
-3. `ai/` — adaptadores de IA; deve existir sempre um `DisabledProvider`.
+3. `inference/` — módulo de inferência; deve existir sempre um `NullProvider`.
 4. `knowledge/` — ingestão, indexação, busca textual/semântica e metadados.
 5. `tools/` — capacidades executáveis: filesystem, documentos, banco, web etc.
 6. `memory/` — memória persistente e modelos de dados.
@@ -32,31 +32,31 @@ Camadas principais:
 O Codex deve preservar esta invariável:
 
 ```text
-AI_ENABLED=false
+INFERENCE_ENABLED=false
 => CLI funciona
 => Core funciona
 => Policies funcionam
 => Tools determinísticas funcionam
 => Knowledge textual funciona
-=> Workflows sem LLM funcionam
+=> Workflows sem provedor externo funcionam
 ```
 
-Se uma nova funcionalidade exigir IA, implemente-a como capacidade opcional com fallback claro.
+Se uma nova funcionalidade exigir módulo de inferência, implemente-a como capacidade opcional com fallback claro.
 
-## Padrão para provedores de IA
+## Padrão para módulo de inferência
 Todos os provedores devem implementar uma interface comum. Nunca importar SDK específico de provedor dentro de `core/`, `agent/`, `knowledge/`, `memory/` ou `cli/`.
 
 Exemplo conceitual:
 
 ```python
-class AIProvider(Protocol):
+class InferenceProvider(Protocol):
     def generate(self, prompt: str, **kwargs) -> str: ...
 ```
 
 Implementações esperadas:
-- `DisabledProvider`
-- `OpenAIProvider`
-- `LocalModelProvider`
+- `NullProvider`
+- `ExternalProvider`
+- `LocalProvider`
 - futuros provedores externos
 
 ## Regras de segurança
@@ -116,9 +116,9 @@ Capacidades alvo:
 ```text
 tales status
 tales config show
-tales config ai enable
-tales config ai disable
-tales config ai provider <provider>
+tales config inference enable
+tales config inference disable
+tales config inference provider <provider>
 tales index <path>
 tales search <query>
 tales knowledge ingest <path>
@@ -141,10 +141,10 @@ Ordem recomendada:
 5. SQLite local.
 6. Ingestão e busca textual.
 7. Workflows determinísticos.
-8. Agent Engine sem IA.
-9. `DisabledProvider` e contrato de AI Provider.
-10. OpenAI Provider opcional.
-11. Provider de modelo local.
+8. Agent Engine sem provedor externo.
+9. `NullProvider` e contrato de InferenceProvider.
+10. ExternalProvider opcional.
+11. LocalProvider de modelo local.
 12. RAG e embeddings opcionais.
 13. Interfaces adicionais somente depois.
 
@@ -163,27 +163,27 @@ Sempre que aplicável:
 - teste feliz
 - teste de erro
 - teste de política/permissão
-- teste com AI desligada
+- teste sem provedor externo
 
 Antes de considerar uma etapa concluída, executar a suíte relevante.
 
 ## Critérios de aceite do MVP
 O MVP é considerado funcional quando:
 - `tales status` executa localmente.
-- o sistema inicia com IA desabilitada.
+- o sistema inicia sem provedor externo configurado.
 - é possível indexar uma pasta autorizada.
 - é possível pesquisar conteúdo indexado.
 - ações de filesystem fora da área permitida são bloqueadas.
-- um workflow determinístico pode ser executado sem IA.
-- o AI Provider pode ser trocado sem alterar o Core.
+- um workflow determinístico pode ser executado sem provedor externo.
+- o InferenceProvider pode ser trocado sem alterar o Core.
 - logs locais registram ações importantes.
 
 ## Conduta do Codex neste repositório
 Antes de alterar código:
 1. Leia este `AGENTS.md`.
 2. Leia `docs/ARCHITECTURE.md`, `docs/SECURITY.md` e `docs/ROADMAP.md`.
-3. Preserve o contrato de independência de IA.
+3. Preserve o contrato de independência de provedor externo.
 4. Prefira pequenas alterações verificáveis.
 5. Explique no resumo final o que mudou, testes executados e riscos pendentes.
 
-Nunca transforme o projeto em um simples wrapper de API de LLM.
+Nunca transforme o projeto em um simples cliente de API de provedor externo.

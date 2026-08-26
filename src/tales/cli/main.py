@@ -18,8 +18,8 @@ def main() -> None:
         print(f"Core:           {status.core}")
         print(f"Agent Engine:   {status.agent_engine}")
         print(f"Knowledge Base: {status.knowledge_base}")
-        print(f"AI Enabled:     {'YES' if status.ai_enabled else 'NO'}")
-        print(f"AI Provider:    {status.ai_provider}")
+        print(f"Inferencia:     {'ATIVA' if status.inference_enabled else 'INATIVA'}")
+        print(f"Provedor:       {status.inference_provider}")
         return
 
     build_parser().print_help()

@@ -3,9 +3,9 @@ app:
   environment: local
   log_level: INFO
 
-ai:
+inference:
   enabled: false
-  provider: disabled
+  provider: null
 
 storage:
   database: data/tales.db

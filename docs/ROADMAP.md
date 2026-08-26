@@ -26,12 +26,12 @@
 - [ ] planner baseado em regras
 - [ ] `tales agent run`
 
-## Fase 4 — IA plugável
-- [ ] interface AIProvider
-- [ ] DisabledProvider
-- [ ] OpenAIProvider opcional
-- [ ] modelo local opcional
-- [ ] AI on/off via config
+## Fase 4 — Módulo de Inferência plugável
+- [ ] interface InferenceProvider
+- [ ] NullProvider (operação sem provedor)
+- [ ] provedor externo opcional via configuração
+- [ ] provedor local opcional
+- [ ] inferência habilitada/desabilitada via config
 
 ## Fase 5 — RAG
 - [ ] chunking

@@ -4,8 +4,8 @@
 Decisão: armazenamento local é o padrão.
 Motivo: independência, controle de dados e portabilidade.
 
-## ADR-002 — IA opcional
-Decisão: Core e workflows determinísticos não dependem de LLM.
+## ADR-002 — Inferência opcional
+Decisão: Core e workflows determinísticos não dependem de provedor externo.
 Motivo: permitir uso offline/independente e evitar lock-in.
 
 ## ADR-003 — CLI-first

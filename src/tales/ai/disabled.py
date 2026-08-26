@@ -1,5 +1,5 @@
-class DisabledProvider:
-    name = "disabled"
+class NullProvider:
+    name = "null"
 
     def generate(self, prompt: str, **kwargs: object) -> str:
-        raise RuntimeError("AI provider is disabled. This operation requires AI.")
+        raise RuntimeError("Módulo de inferência não configurado. Esta operação requer um provedor externo.")

@@ -23,4 +23,4 @@
 - Bloquear caminhos fora das roots permitidas.
 - Sanitizar logs.
 - Não enviar arquivos completos a provedores externos por padrão.
-- Selecionar somente o contexto necessário ao usar IA.
+- Selecionar somente o contexto necessário ao usar provedor externo de processamento.

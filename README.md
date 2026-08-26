@@ -1,6 +1,6 @@
 # IAM | Governança SoD & SAT + Tales Agent Platform
 
-> Repositório unificado: análise de Segregação de Funções (SoD) e Sensitive Access Transactions (SAT), combinado com a plataforma agentic `tales-agent` — local-first, CLI-first e independente de fornecedor de IA.
+> Repositório unificado: análise de Segregação de Funções (SoD) e Sensitive Access Transactions (SAT), combinado com a plataforma agentic `tales-agent` — local-first, CLI-first e independente de fornecedor externo.
 
 ---
 
@@ -34,7 +34,7 @@ py main.py processar --funcionalidades .\funcionalidades.xlsx --usuarios .\usuar
 
 ## Tales Agent Platform
 
-Plataforma agentic local-first, CLI-first e independente de fornecedor de IA.
+Plataforma agentic local-first, CLI-first e independente de fornecedor externo.
 
 ### Objetivo
 
@@ -44,10 +44,10 @@ Construir um sistema que combine:
 - Knowledge Base local
 - Memory local
 - Tools controladas por política
-- IA opcional e intercambiável
+- Módulo de inferência opcional e intercambiável
 - CLI como primeira interface
 
-A aplicação deve continuar funcionando com IA desabilitada.
+A aplicação deve continuar funcionando sem provedor externo de processamento.
 
 ### Começo rápido
 
@@ -69,9 +69,9 @@ tales status
 
 ### Regra arquitetural principal
 ```text
-Core != LLM
-Agent != LLM
-OpenAI != Dependência Obrigatória
+Core != Provedor Externo
+Agent != Provedor Externo
+Inferência != Dependência Obrigatória
 ```
 
 ---
